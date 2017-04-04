@@ -131,12 +131,13 @@ public class ReaderSiteHeaderView extends LinearLayout {
             txtDescription.setVisibility(View.GONE);
         }
 
+        Context context = getContext();
         try {
-            Context context = getContext();
             txtFollowCount.setText(String.format(LanguageUtils.getCurrentDeviceLanguage(context),
                     context.getString(R.string.reader_label_follow_count), blogInfo.numSubscribers));
         } catch (ArithmeticException exception) {
             AppLog.v(AppLog.T.READER, "Error formatting follow count label: " + exception);
+            txtFollowCount.setText(blogInfo.numSubscribers + " " + context.getString(R.string.stats_view_followers));
         }
 
         if (!mAccountStore.hasAccessToken()) {
