@@ -14,6 +14,8 @@ import org.wordpress.android.fluxc.store.AccountStore;
 import org.wordpress.android.models.ReaderBlog;
 import org.wordpress.android.ui.reader.actions.ReaderActions;
 import org.wordpress.android.ui.reader.actions.ReaderBlogActions;
+import org.wordpress.android.util.AppLog;
+import org.wordpress.android.util.LanguageUtils;
 import org.wordpress.android.util.NetworkUtils;
 import org.wordpress.android.util.ToastUtils;
 import org.wordpress.android.util.UrlUtils;
@@ -129,7 +131,13 @@ public class ReaderSiteHeaderView extends LinearLayout {
             txtDescription.setVisibility(View.GONE);
         }
 
-        txtFollowCount.setText(String.format(getContext().getString(R.string.reader_label_follow_count), blogInfo.numSubscribers));
+        try {
+            Context context = getContext();
+            txtFollowCount.setText(String.format(LanguageUtils.getCurrentDeviceLanguage(context),
+                    context.getString(R.string.reader_label_follow_count), blogInfo.numSubscribers));
+        } catch (ArithmeticException exception) {
+            AppLog.v(AppLog.T.READER, "Error formatting follow count label: " + exception);
+        }
 
         if (!mAccountStore.hasAccessToken()) {
             mFollowButton.setVisibility(View.GONE);
