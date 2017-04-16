@@ -29,7 +29,7 @@ function pFail() {
 
 function checkENStrings() {
   if [[ -n $(git status --porcelain|grep "M res") ]]; then
-    /bin/echo -n "Unstagged changes detected in $RESDIR/ - can't continue..."
+    /bin/echo -n "Unstagged changes detected in $RESDIR - can't continue..."
     pFail
     exit 3
   fi
